@@ -2,7 +2,7 @@
 {% block content%}
 <h1>{% block title %} MyMovie App {% endblock%}</h1>
 <form method="post">
-    <div class="form-group"><label>Movie title:</label>
+    <div class="form-group">
         <label> Movie Title :
             <input type="text" name="title" placeholder="Enter movie title..." class="form-control" value="{{ request.form['title'] }}"/>
         </label>
@@ -10,4 +10,12 @@
     <div class="form-group">
         <button class="btnbtn-primary">Show Info</button></div>
 </form>
-{% for obj in info %}<p>{{ obj}}</p>{% endfor%}{% endblock %}
+{% for obj in info %}
+    <p>Language : {{ obj['original_lang']['value']}}</p>
+    <p>Overview : {{ obj['overview']['value']}}</p>
+    <p>Release_Date : {{ obj['release_date']['value']}}</p>
+    <p>Duration : {{ obj['runtime']['value']}} Minutes</p>
+    <p>Budget : {{ obj['budget']['value']}}</p>
+    <p>Revenue : {{ obj['revenue']['value']}}</p>
+{% endfor%}
+{% endblock %}
