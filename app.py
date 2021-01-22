@@ -2,10 +2,7 @@ from flask import Flask, render_template, request
 
 from string import Template
 from SPARQLWrapper import SPARQLWrapper, JSON
-import rdflib
 
-g = rdflib.Graph()
-g.parse('data/TMDB.ttl', format='turtle')
 sparql = SPARQLWrapper("http://localhost:3030/TMDB/sparql")
 
 actor_query = """
