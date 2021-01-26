@@ -1,21 +1,24 @@
 {% extends 'base.html' %}
 {% block content%}
-<h1>{% block title %} MyMovie App {% endblock%}</h1>
-<form method="post">
-    <div class="form-group">
+<h1 >{% block title %} MyMovie App {% endblock%}</h1>
+<form method="post"  >
+    <div class="form-group" >
         <label> Movie Title :
             <input type="text" name="title" placeholder="Enter movie title..." class="form-control" value="{{ request.form['title'] }}"/>
         </label>
     </div>
     <div class="form-group">
-        <button class="btnbtn-primary">Show Info</button></div>
+        <button class="btnbtn-primary">Show Info</button>
+    </div>
 </form>
 {% for obj in info %}
-    <p>Language : {{ obj['original_lang']['value']}}</p>
-    <p>Overview : {{ obj['overview']['value']}}</p>
-    <p>Release_Date : {{ obj['release_date']['value']}}</p>
-    <p>Duration : {{ obj['runtime']['value']}} Minutes</p>
-    <p>Budget : {{ obj['budget']['value']}}</p>
-    <p>Revenue : {{ obj['revenue']['value']}}</p>
+    <ul>
+    <li>Language : {{ obj['original_lang']['value']}}</li>
+    <li>Overview : {{ obj['overview']['value']}}</li>
+    <li>Release_Date : {{ obj['release_date']['value']}}</li>
+    <li>Duration : {{ obj['runtime']['value']}} Minutes</li>
+    <li>Budget : {{ obj['budget']['value']}}</li>
+    <li>Revenue : {{ obj['revenue']['value']}}</li>
+    </ul>
 {% endfor%}
 {% endblock %}
