@@ -1,15 +1,28 @@
 from flask import Flask, render_template, request
-
+from nlp import predict_title
 from string import Template
 from SPARQLWrapper import SPARQLWrapper, JSON
 
 sparql = SPARQLWrapper("http://localhost:3030/TMDB/sparql")
 
-actor_query = """
+title_query = """
 PREFIX : <https://www.themoviedb.org/kaggle-export/>
-SELECT ?actor
-WHERE{?m a :Movie ; :title "$title" ;  :cast/:name?actor.}
+SELECT  ?title
+    WHERE {
+    ?m a :Movie;
+        :title ?title ;
+    }
 """
+
+
+def prepare():
+    sparql.setQuery(title_query)
+    sparql.setReturnFormat(JSON)
+    results_dict = sparql.query().convert()
+    results = [t['title']['value'] for t in results_dict['results']['bindings']]
+    return results
+
+
 info_query = """
 PREFIX : <https://www.themoviedb.org/kaggle-export/>
 SELECT ?original_lang ?overview ?release_date ?status ?runtime ?budget ?revenue
@@ -43,7 +56,14 @@ def query(title):
 def index():
     if request.method == 'POST':
         title = request.form['title']
-        return render_template('index.html', info=query(title))
+        result = query(title)
+        if len(result) == 0:
+            print("Predicting ...")
+            title = predict_title(prepare, title)
+            print('found : ', title)
+        result = query(title)
+        print(result)
+        return render_template('index.html', info=result)
     else:
         return render_template('index.html', info=[])
 

@@ -8,6 +8,11 @@ verify_ssl = true
 [packages]
 flask = "*"
 flaskwebgui = "*"
+pandas = "*"
+spacy = "*"
+sparqlwrapper = "*"
+jupyter = "*"
+pd = "*"
 
 [requires]
 python_version = "3.9"
