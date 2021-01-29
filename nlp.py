@@ -35,30 +35,3 @@ def predict_title(query: any, input_title: str) -> str:
     # print(question.text,answer)
     return answer
 
-
-def evaluate_result(predicted: str, actual: str) -> int:
-    """Evaluates individual string answer string pair
-    :param predicted: answer predicted by predictor
-    :param actual: correct answer according to dataset
-    :return: +1 if predicted answer is correct , 0 if no answer is predicted(None),
-     -1 if answer is wrong"""
-    if predicted is None:
-        return 0
-    elif predicted == actual:
-        return 1
-    else:
-        return -1
-
-
-def evaluate_results(predicted: pd.Series, actual: pd.Series) -> float:
-    """Evaluates a series of answer pairs
-    :param predicted: Series of predicted answers
-    :param actual: Series of correct answers
-    :return: Float value between -1 (worst) and +1 (best)"""
-    sum = 0
-    for index, value in predicted.items():
-        eval = evaluate_result(value, actual[index])
-        sum += eval
-        result = sum / predicted.size
-    return result
-
