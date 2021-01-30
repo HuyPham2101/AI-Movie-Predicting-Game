@@ -7,11 +7,11 @@
                 <input type="text" name="title" placeholder="Enter movie title..." class="form-control margin"
                        value="{{ request.form['title'] }}"/>
             </label>
-            <button class="btn btn-info margin" onclick="">Show Info</button>
+            <button class="btn btn-info margin" >Show Info</button>
         </div>
     </form>
     {% if warning != '' %}
-        <p style="color:red"><span id="warning">{% block warning %} {{ warning }} {% endblock %}</span></p>
+        <p style="color:#ff0000"><span id="warning">{% block warning %} {{ warning }} {% endblock %}</span></p>
     {% endif %}
     {% for obj in info %}
         {% if suggestion != '' %}
@@ -19,25 +19,37 @@
                                                                         onclick="searchClicked()">{% block suggestion %}
                 {{ suggestion }} {% endblock %}</span></p>
             <div id="filmInfo" style="display:none">
-                <ul>
-                    <li>Language : {{ obj['original_lang']['value'] }}</li>
-                    <li>Overview : {{ obj['overview']['value'] }}</li>
-                    <li>Release_Date : {{ obj['release_date']['value'] }}</li>
-                    <li>Duration : {{ obj['runtime']['value'] }} Minutes</li>
-                    <li>Budget : {{ obj['budget']['value'] }}</li>
-                    <li>Revenue : {{ obj['revenue']['value'] }}</li>
-                </ul>
+                    <h3>{{ obj['original_title']['value'] }} ({{ obj['release_date']['value'] }})</h3>
+                    <span style="margin-top: 1px">{{ obj['runtime']['value'] }} Minutes</span>
+                    <h6>{{ obj['tagline']['value'] }}</h6>
+                    <div style="  display: flex ;flex-direction: row ; justify-content: space-around">
+                        <div >Language : {{ obj['original_lang']['value'] }}</div>
+                        <div >Budget : {{ obj['budget']['value'] }} USD</div>
+                        <div >Revenue : {{ obj['revenue']['value'] }} USD</div>
+                    </div>
+                    <div>
+                        <h5>
+                            Overview
+                        </h5>
+                        <p>{{ obj['overview']['value'] }}</p>
+                    </div>
             </div>
         {% else %}
             <div id="filmInfo">
-                <ul>
-                    <li>Language : {{ obj['original_lang']['value'] }}</li>
-                    <li>Overview : {{ obj['overview']['value'] }}</li>
-                    <li>Release_Date : {{ obj['release_date']['value'] }}</li>
-                    <li>Duration : {{ obj['runtime']['value'] }} Minutes</li>
-                    <li>Budget : {{ obj['budget']['value'] }} USD</li>
-                    <li>Revenue : {{ obj['revenue']['value'] }} USD</li>
-                </ul>
+                    <h3>{{ obj['original_title']['value'] }} ({{ obj['release_date']['value'] }})</h3>
+                    <span style="margin-top: 1px">{{ obj['runtime']['value'] }} Minutes</span>
+                    <h6>{{ obj['tagline']['value'] }}</h6>
+                    <div style="  display: flex ;flex-direction: row ; justify-content: space-around">
+                        <div >Language : {{ obj['original_lang']['value'] }}</div>
+                        <div >Budget : {{ obj['budget']['value'] }} USD</div>
+                        <div >Revenue : {{ obj['revenue']['value'] }} USD</div>
+                    </div>
+                    <div>
+                        <h5>
+                            Overview
+                        </h5>
+                        <p>{{ obj['overview']['value'] }}</p>
+                    </div>
             </div>
         {% endif %}
 
