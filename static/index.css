@@ -6,7 +6,7 @@ body {
 }
 
 .container {
-    background: linear-gradient(to right, #c0c0c0 0%, #ffffff 100%);/* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+    background: linear-gradient(to right, #453434 0%, #5d3232 100%);/* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
     border-radius: 6px;
     margin-top: 10px;
     height: 95vh;
@@ -52,3 +52,16 @@ body {
 .margin {
     margin: 1em !important;
 }
+
+h6{
+    color: gray;
+    font-style: oblique;
+}
+h3{
+    font-style: italic;
+    font-weight: bold;
+}
+h5{
+    color: aqua;
+}
+

@@ -25,7 +25,7 @@ def prepare():
 
 info_query = """
 PREFIX : <https://www.themoviedb.org/kaggle-export/>
-SELECT ?original_lang ?overview ?release_date ?status ?runtime ?budget ?revenue
+SELECT ?original_lang ?overview ?release_date ?status ?runtime ?budget ?revenue ?poster_path ?tagline ?original_title
     WHERE {
     ?m a :Movie;
         :title "$title" ;
@@ -36,6 +36,9 @@ SELECT ?original_lang ?overview ?release_date ?status ?runtime ?budget ?revenue
         :overview ?overview ;
         :budget ?budget ;
         :revenue ?revenue;
+        :poster_path ?poster_path;
+        :tagline ?tagline;
+        :original_title ?original_title
     }
 
 """
