@@ -1,27 +1,47 @@
 {% extends 'base.html' %}
-{% block content%}
-<h1 >{% block title %} MyMovie App {% endblock%}</h1>
-<form method="post"  >
-    <div class="form-group" >
-        <label> Movie Title :
-            <input type="text" name="title" placeholder="Enter movie title..." class="form-control" value="{{ request.form['title'] }}"/>
-        </label>
-    </div>
-    <div class="form-group">
-        <button class="btnbtn-primary" onclick="">Show Info</button>
-    </div>
-</form>
-{% for obj in info %}
-    <p id = "suggestion">May Be What You are looking for is <span id = "title-suggestion" onclick="searchClicked()">{% block suggestion %} {{ suggestion }} {% endblock %}</span></p>
-    <div id = "filmInfo" style="display:none">
-    <ul>
-    <li>Language : {{ obj['original_lang']['value']}}</li>
-    <li>Overview : {{ obj['overview']['value']}}</li>
-    <li>Release_Date : {{ obj['release_date']['value']}}</li>
-    <li>Duration : {{ obj['runtime']['value']}} Minutes</li>
-    <li>Budget : {{ obj['budget']['value']}}</li>
-    <li>Revenue : {{ obj['revenue']['value']}}</li>
-    </ul>
-    </div>
-{% endfor%}
+{% block content %}
+    <h1>{% block title %} MyMovie App {% endblock %}</h1>
+    <form method="post">
+        <div class="form-group">
+            <label> Movie Title :
+                <input type="text" name="title" placeholder="Enter movie title..." class="form-control"
+                       value="{{ request.form['title'] }}"/>
+            </label>
+        </div>
+        <div class="form-group">
+            <button class="btnbtn-primary" onclick="">Show Info</button>
+        </div>
+    </form>
+    {% if warning != '' %}
+        <p style="color:red"><span id="warning">{% block warning %} {{ warning }} {% endblock %}</span></p>
+    {% endif %}
+    {% for obj in info %}
+        {% if suggestion != '' %}
+            <p id="suggestion">May Be What You are looking for is <span id="title-suggestion"
+                                                                        onclick="searchClicked()">{% block suggestion %}
+                {{ suggestion }} {% endblock %}</span></p>
+            <div id="filmInfo" style="display:none">
+                <ul>
+                    <li>Language : {{ obj['original_lang']['value'] }}</li>
+                    <li>Overview : {{ obj['overview']['value'] }}</li>
+                    <li>Release_Date : {{ obj['release_date']['value'] }}</li>
+                    <li>Duration : {{ obj['runtime']['value'] }} Minutes</li>
+                    <li>Budget : {{ obj['budget']['value'] }}</li>
+                    <li>Revenue : {{ obj['revenue']['value'] }}</li>
+                </ul>
+            </div>
+        {% else %}
+            <div id="filmInfo">
+                <ul>
+                    <li>Language : {{ obj['original_lang']['value'] }}</li>
+                    <li>Overview : {{ obj['overview']['value'] }}</li>
+                    <li>Release_Date : {{ obj['release_date']['value'] }}</li>
+                    <li>Duration : {{ obj['runtime']['value'] }} Minutes</li>
+                    <li>Budget : {{ obj['budget']['value'] }}</li>
+                    <li>Revenue : {{ obj['revenue']['value'] }}</li>
+                </ul>
+            </div>
+        {% endif %}
+
+    {% endfor %}
 {% endblock %}

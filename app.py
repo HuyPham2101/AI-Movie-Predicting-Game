@@ -56,17 +56,24 @@ def query(title):
 def index():
     if request.method == 'POST':
         title = request.form['title']
+        suggestion = title
+        # if the title not given . return a warning
+        if title == '':
+            return render_template('index.html', info=[], warning="Enter a title", suggestion='')
         result = query(title)
+        # if the result is empty , predict the correct title
         if len(result) == 0:
             print("Predicting ...")
-            title = predict_title(prepare, title)
-            print('found : ', title)
-        
-        result = query(title)
-        print(result)
-        return render_template('index.html', info=result, suggestion=title)
+            suggestion = predict_title(prepare, title)
+            print('found : ', suggestion)
+        # check if there is a suggestion.
+        if title != suggestion:
+            result = query(suggestion)
+        else:
+            suggestion = ''
+        return render_template('index.html', info=result, warning='', suggestion=suggestion)
     else:
-        return render_template('index.html', info=[])
+        return render_template('index.html', info=[], warning='', suggestion='')
 
 
 if __name__ == '__main__':
