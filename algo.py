@@ -7,6 +7,7 @@ from sklearn.preprocessing import LabelEncoder, StandardScaler
 from sklearn.linear_model import LogisticRegression
 from sklearn.impute import SimpleImputer
 import pickle
+from sklearn.model_selection import cross_val_score
 
 sparql = SPARQLWrapper("http://localhost:3030/TMDB/sparql")
 
@@ -40,48 +41,43 @@ def predict_title(query: any, input_title: str) -> str:
     return answer
 
 
-def fetch_data():
-    info_query = """
-    PREFIX : <https://www.themoviedb.org/kaggle-export/>
-    SELECT ?original_lang ?runtime ?budget ?revenue ?title
-        WHERE {
-        ?m a :Movie;
-            :title ?title ;
-            :original_language ?original_lang ;
-            :runtime ?runtime ;
-            :budget ?budget ;
-            :revenue ?revenue;
-        }
-    """
-    sparql.setQuery(info_query)
-    sparql.setReturnFormat(JSON)
-    results_dict = sparql.query().convert()
-    results = [t for t in results_dict['results']['bindings']]
-    infos = []
-    for res in results:
-        film = {'lang': res['original_lang']['value'], 'title': res['title']['value'], 'budget': res['budget']['value'],
-                'revenue': res['revenue']['value'], 'runtime': res['runtime']['value']}
-        infos.append(film)
-    return pd.DataFrame(infos)
-
-
 def create_model():
-    data = fetch_data()
+    data = pd.read_csv('data/train.csv')
+    data = data[['title', 'budget', 'revenue', 'runtime', 'original_language']]
+    data['lang'] = data['original_language']
+    data = data.drop(['original_language'], axis=1)
     train_data = preprocess(data.drop(['revenue'], axis=1))
     target = data['revenue']
     regess = LogisticRegression(solver='liblinear')
     regess.fit(train_data, target)
+    # evaluate model
+    # X_train = train_data
+    # y_train = target
+    # scores = cross_val_score(regess, X_train, y_train)
+    # print(f'Accuracy: {scores.mean()}')
+    # test model
+    # test = pd.read_csv('data/test.csv')
+    # test = test[['title', 'budget', 'runtime', 'original_language']]
+    # test['lang'] = test['original_language']
+    # test = test.drop(['original_language'], axis=1)
+    # test_data = preprocess(test)
+    # predictions = regess.predict(test_data)
+    #
+    # output = pd.DataFrame({'id': test.title, 'revenue': predictions})
+    # output.to_csv('data/submission.csv', index=False)
     return regess
 
 
 def preprocess(data):
     data['lang'] = data['lang'].fillna('en')
     data['title'] = data['title'].fillna('No title')
-    data['budget'] = data['budget'].fillna(data['budget'].mean())
-    data['runtime'] = data['runtime'].fillna(data['runtime'].mean())
+    imp = SimpleImputer(missing_values=np.nan, strategy='mean')
     if data.size == 4:
         data['budget'] = data['budget'].fillna(0)
         data['runtime'] = data['runtime'].fillna(0)
+    else:
+        data['budget'] = imp.fit_transform(data[['budget']])
+        data['runtime'] = imp.fit_transform(data[['runtime']])
     label_list = ['title', 'lang']
     for column in label_list:
         # encode the label to int
