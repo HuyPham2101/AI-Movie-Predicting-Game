@@ -61,9 +61,10 @@ def index():
             print("Predicting ...")
             title = predict_title(prepare, title)
             print('found : ', title)
+        
         result = query(title)
         print(result)
-        return render_template('index.html', info=result)
+        return render_template('index.html', info=result, suggestion=title)
     else:
         return render_template('index.html', info=[])
 

@@ -8,10 +8,12 @@
         </label>
     </div>
     <div class="form-group">
-        <button class="btnbtn-primary">Show Info</button>
+        <button class="btnbtn-primary" onclick="">Show Info</button>
     </div>
 </form>
 {% for obj in info %}
+    <p id = "suggestion">May Be What You are looking for is <span id = "title-suggestion" onclick="searchClicked()">{% block suggestion %} {{ suggestion }} {% endblock %}</span></p>
+    <div id = "filmInfo" style="display:none">
     <ul>
     <li>Language : {{ obj['original_lang']['value']}}</li>
     <li>Overview : {{ obj['overview']['value']}}</li>
@@ -20,5 +22,6 @@
     <li>Budget : {{ obj['budget']['value']}}</li>
     <li>Revenue : {{ obj['revenue']['value']}}</li>
     </ul>
+    </div>
 {% endfor%}
 {% endblock %}

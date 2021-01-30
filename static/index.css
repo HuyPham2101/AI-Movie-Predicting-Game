@@ -37,3 +37,11 @@ body{
   background-color: #815c32;
   color: white;
 }
+
+#title-suggestion {
+    text-decoration: underline;
+}
+#title-suggestion:hover {
+    background-color: black;
+    cursor: pointer;
+}
