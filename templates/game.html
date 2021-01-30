@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% block game %}
+    <h1>{% block title %} MyMovie App {% endblock %}</h1>
+    <form method="post">
+        <div class="form-group">
+            <label> Movie Title :
+                <input type="text" name="title" placeholder="Enter movie title... default No Title" class="form-control margin"
+                       value="{{ request.form['title'] }}"/>
+            </label>
+            <label> Budget :
+                <input type="text" name="budget" placeholder="Give it a budget... default 0 USD" class="form-control margin"
+                       value="{{ request.form['budget'] }}"/>
+            </label>
+            <label> Runtime in minutes :
+                <input type="text" name="runtime" placeholder="Enter movie runtime... default 0 Minutes" class="form-control margin"
+                       value="{{ request.form['runtime'] }}"/>
+            </label>
+            <label> Original_language :
+                <select name="lang_select">
+                    {% for l in lang %}
+                        <option value={{ l }}>{{ l }}</option>
+                    {% endfor %}
+                </select>
+            </label>
+            <button class="btn btn-info margin" onclick="">Let's guess revenue</button>
+        </div>
+    </form>
+
+    <p id="revenue">Revenue :{% block revenue %}
+        {{ revenue }} {% endblock %} USD</p>
+
+{% endblock %}

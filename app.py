@@ -1,10 +1,13 @@
+import pickle
 from flask import Flask, render_template, request
-from nlp import predict_title
+from algo import predict_title, preprocess
 from string import Template
 from SPARQLWrapper import SPARQLWrapper, JSON
+import pandas as pd
+import numpy as np
 
 sparql = SPARQLWrapper("http://localhost:3030/TMDB/sparql")
-
+model = pickle.load(open('data/model.pkl', 'rb'))
 title_query = """
 PREFIX : <https://www.themoviedb.org/kaggle-export/>
 SELECT  ?title
@@ -13,6 +16,22 @@ SELECT  ?title
         :title ?title ;
     }
 """
+lang_query = """
+PREFIX : <https://www.themoviedb.org/kaggle-export/>
+SELECT Distinct ?lang
+    WHERE {
+    ?m a :Movie;
+        :original_language ?lang ;
+    }
+"""
+
+
+def query_lang():
+    sparql.setQuery(lang_query)
+    sparql.setReturnFormat(JSON)
+    results_dict = sparql.query().convert()
+    results = [t['lang']['value'] for t in results_dict['results']['bindings']]
+    return results
 
 
 def prepare():
@@ -74,6 +93,22 @@ def index():
         return render_template('index.html', info=result, warning='', suggestion=suggestion)
     else:
         return render_template('index.html', info=[], warning='', suggestion='')
+
+
+@app.route("/game", methods=('GET', 'POST'))
+def guessing_game():
+    langs = query_lang()
+    if request.method == 'POST':
+        title = request.form['title'] if request.form['title'] else np.nan
+        budget = request.form['budget'] if request.form['budget'] else np.nan
+        runtime = request.form['runtime'] if request.form['runtime'] else np.nan
+        lang = request.form.get('lang_select')
+        data = pd.DataFrame({'title': [title], 'budget': [budget], 'runtime': [runtime], 'lang': [lang]})
+        data = preprocess(data)
+        result = model.predict(data)
+        return render_template('game.html', lang=langs, revenue=result[0])
+    else:
+        return render_template('game.html', lang=langs, revenue='')
 
 
 if __name__ == '__main__':

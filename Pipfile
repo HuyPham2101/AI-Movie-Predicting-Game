@@ -13,6 +13,7 @@ spacy = "*"
 sparqlwrapper = "*"
 jupyter = "*"
 pd = "*"
+scikit-learn = "*"
 
 [requires]
 python_version = "3.9"
