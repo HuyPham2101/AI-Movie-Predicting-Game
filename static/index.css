@@ -64,4 +64,12 @@ h3{
 h5{
     color: aqua;
 }
-
+#revenue_div{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+}
+.revenue_label{
+    width: 400px;
+}

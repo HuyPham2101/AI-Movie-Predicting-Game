@@ -1,32 +1,33 @@
 {% extends 'base.html' %}
 {% block game %}
-    <h1>{% block title %} MyMovie App {% endblock %}</h1>
-    <form method="post">
-        <div class="form-group">
-            <label> Movie Title :
-                <input type="text" name="title" placeholder="Enter movie title... default No Title" class="form-control margin"
-                       value="{{ request.form['title'] }}"/>
+    <h1 style="text-align: center">{% block title %} Guessing Game{% endblock %}</h1>
+    <form method="post" >
+        <div class="form-group" id ="revenue_div" >
+            <label class = "revenue_label" for="title"> Movie Title :
             </label>
-            <label> Budget :
-                <input type="text" name="budget" placeholder="Give it a budget... default 0 USD" class="form-control margin"
-                       value="{{ request.form['budget'] }}"/>
+            <input type="text" name="title" placeholder="Enter movie title... default No Title" class="form-control margin"
+                   value="{{ request.form['title'] }}" style="width:400px " id="title"/>
+            <label class = "revenue_label" for="budget"> Budget :
             </label>
-            <label> Runtime in minutes :
-                <input type="text" name="runtime" placeholder="Enter movie runtime... default 0 Minutes" class="form-control margin"
-                       value="{{ request.form['runtime'] }}"/>
+            <input type="text" name="budget" placeholder="Give it a budget... default 0 USD" class="form-control margin"
+                   value="{{ request.form['budget'] }}" style="width:400px " id="budget"/>
+            <label class = "revenue_label" for="runtime"> Runtime in minutes :
             </label>
-            <label> Original_language :
-                <select name="lang_select">
-                    {% for l in lang %}
-                        <option value={{ l }}>{{ l }}</option>
-                    {% endfor %}
-                </select>
+            <input type="text" name="runtime" placeholder="Enter movie runtime... default 0 Minutes" class="form-control margin"
+                   value="{{ request.form['runtime'] }}" style="width:400px " id="runtime"/>
+            <label class = "revenue_label"> Original_language :
+                <select name="lang_select" style="width: 50px;border-radius: 4px">
+                {% for l in lang %}
+                    <option value={{ l }}>{{ l }}</option>
+                {% endfor %}
+            </select>
             </label>
-            <button class="btn btn-info margin" onclick="">Let's guess revenue</button>
+            <button class="btn btn-info margin" style="width: 400px">Let's guess revenue</button>
         </div>
     </form>
 
-    <p id="revenue">Revenue :{% block revenue %}
-        {{ revenue }} {% endblock %} USD</p>
+    <div id="revenue-show" style="text-align: center" >
+        Revenue :{% block revenue %} {{ revenue }} {% endblock %} USD
+    </div>
 
 {% endblock %}
